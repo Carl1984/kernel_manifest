@@ -31,10 +31,10 @@ on:
         description: "SUSFS 版本"
         required: true
         default: 'v1.5.5'
-      KSU_NEXT_VERSION:
+      kernelsu_variant:
         description: "KernelSU-Next 版本"
         required: true
-        default: 'v1.0.5'
+        default: 'SukiSU'
 jobs:
   build:
     runs-on: ubuntu-latest
