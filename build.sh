@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-export CONFIG="gt5pro"
+export CONFIG="gt6"
 export ANYKERNEL_BRANCH="android14-6.1"
 export SUSFS_BRANCH="gki-android14-6.1"
 export SUSFS_VERSION="v1.5.5"
@@ -15,7 +15,7 @@ chmod a+x ./git-repo/repo
 
 mkdir -p "$CONFIG"
 cd "$CONFIG"
-../git-repo/repo init -u https://github.com/ferstar/kernel_manifest.git \
+../git-repo/repo init -u https://github.com/Carl1984/kernel_manifest.git \
     -b realme/sm8650 -m ${CONFIG}.xml --depth=1
 ../git-repo/repo sync -c -j$(nproc --all) --no-tags --fail-fast
 
