@@ -152,11 +152,13 @@ jobs:
           echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> ./common/arch/arm64/configs/gki_defconfig
 
 
+          # Remove check_defconfig
+          sed -i 's/check_defconfig//' ./common/build.config.gki
+          
+          cd ../common
           patch -p1 < ../../.repo/manifests/patches/001-lz4.patch
           patch -p1 < ../../.repo/manifests/patches/002-zstd.patch
-         
-          # Remove check_defconfig
-          sed -i 's/check_defconfig//' ./common/build.config.gki          
+                   
 
       - name: Build kernel
         run: |
