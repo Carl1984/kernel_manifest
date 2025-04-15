@@ -9,7 +9,7 @@ on:
       MANIFEST:
         description: "配置文件"
         required: true
-        default: 'gt6'
+        default: 'gt6kgt5v'
       CPUD:
         description: "处理器代号"
         required: true
