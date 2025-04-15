@@ -22,19 +22,35 @@ on:
         description: "内核版本"
         required: true
         default: '6.1'
+      kernelsu_variant:
+        description: "选择 KSU"
+        required: true
+        type: choice
+        options:
+          - SukiSU
+          - SukiSU-Ultra
+        default: SukiSU-Ultra
+      kernelsu_version:
+        description: "选择 KSU 版本"
+        required: true
+        type: choice
+        options:
+          - tag
+          - main
+        default: main
       SUSFS_ENABLED:
         description: "添加 SUSFS"
         required: true
         type: boolean
         default: true
-      SUSFS_VERSION:
-        description: "SUSFS 版本"
+      VFS_patch_ENABLED:
+        description: "添加 vfs 补丁（新钩子）？"
         required: true
-        default: 'v1.5.5'
-      kernelsu_variant:
-        description: "KernelSU-Next 版本"
-        required: true
-        default: 'SukiSU'
+        type: choice
+        options:
+          - enable
+          - disable
+        default: enable
 jobs:
   build:
     runs-on: ubuntu-latest
