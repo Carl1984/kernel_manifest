@@ -79,6 +79,7 @@ jobs:
           curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -s next
           cd KernelSU-Next
           KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10200)
+          echo "KSUVER=$KSU_VERSION" >> $GITHUB_ENV
           sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
 
       - name: Set up susfs
@@ -147,3 +148,29 @@ jobs:
         with:
           name: AK3_KSU_Next_${{ github.event.inputs.MANIFEST }}_${{ env.KVER }}
           path: ./AnyKernel3/*
+
+      - name: 下载 ZIP 工件
+        uses: actions/download-artifact@v4
+        with:
+          name: Kernel_ZIP_Artifacts
+          path:  ./release_zips
+         
+      - name: 创建发布
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name:  "${{ env.KSUVER }}_${{ github.event.inputs.FEIL }}_${{ env.KVER }}"
+          name: "Realme${{ github.event.inputs.FEIL }} Build ${{ github.run_number }}"
+          body: |
+            每日自动编译 SukiSU-Ultra 内核
+            - 机型： Realme-${{ github.event.inputs.FEIL }}
+            - 特性：MKSU+SUSFS+VFS+KPM
+            - 编译时间: ${{ env.KVER }}
+            - 内核版本:${{ env.KSUVER }}
+            - 推荐管理器：[SukiSU-Ultra](https://github.com/ShirkNeko/SukiSU-Ultra/releases)
+            - 如果构建的内核版本没变，不必更新！
+
+          draft: false
+          prerelease: false
+          files: |
+            release_zips/AnyKernel3_*.zip
