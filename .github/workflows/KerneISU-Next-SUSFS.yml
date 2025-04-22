@@ -174,4 +174,4 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            release_zips/AK3_KSU_Next_*.zip
+            release_zips/*.zip
