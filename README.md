@@ -1,6 +1,6 @@
 
 
-复制了 ferstar的配置和LZ4 patch：[OnePlusOSS](https://github.com/ferstar/kernel_manifest)
+复制了 ferstar的配置和LZ4 patch：[ferstar/kernel_manifest](https://github.com/ferstar/kernel_manifest)
 
 # how to build
 
