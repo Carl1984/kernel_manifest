@@ -171,7 +171,7 @@ jobs:
           name: "Realme${{ github.event.inputs.FEIL }} Build ${{ github.run_number }}"
           body: |
             每日自动编译 SukiSU-Ultra 内核
-            - 机型： Realme-${{ github.event.inputs.FEIL }}
+            - 机型： Realme-${{ github.event.inputs.MANIFEST }}
             - 特性：MKSU+SUSFS+VFS+KPM
             - 编译时间: ${{ env.KVER }}
             - 内核版本:${{ env.KSUVER }}
