@@ -167,15 +167,15 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name:  "${{ env.KSUVER }}_${{ github.event.inputs.FEIL }}_${{ env.KVER }}"
-          name: "Realme${{ github.event.inputs.FEIL }} Build ${{ github.run_number }}"
+          tag_name:  "${{ env.KSUVER }}_${{ github.event.inputs.MANIFEST }}_${{ env.KVER }}"
+          name: "Realme${{ github.event.inputs.MANIFEST }} Build ${{ github.run_number }}"
           body: |
             每日自动编译 SukiSU-Ultra 内核
             - 机型： Realme-${{ github.event.inputs.MANIFEST }}
             - 特性：MKSU+SUSFS+VFS+KPM
             - 编译时间: ${{ env.KVER }}
             - 内核版本:${{ env.KSUVER }}
-            - 推荐管理器：[SukiSU-Ultra](https://github.com/ShirkNeko/SukiSU-Ultra/releases)
+            - 推荐管理器：[ferstar/kernel_manifest](https://github.com/ferstar/kernel_manifest)
             - 如果构建的内核版本没变，不必更新！
 
           draft: false
