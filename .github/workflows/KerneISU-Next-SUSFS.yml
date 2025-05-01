@@ -113,7 +113,7 @@ jobs:
           patch -p1 < ../../.repo/manifests/patches/001-lz4.patch
           patch -p1 < ../../.repo/manifests/patches/002-zstd.patch
           #Add BBR
-          patch -p1 -F 3 < ../../.repo/manifests/patches/bbrv3-5.15+.patch
+          # patch -p1 -F 3 < ../../.repo/manifests/patches/bbrv3-5.15+.patch
 
       - name: Apply new hook and add configuration
         run: |
@@ -137,8 +137,8 @@ jobs:
          echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> ./common/arch/arm64/configs/gki_defconfig
          echo "CONFIG_KSU_SUSFS_SUS_SU=n" >> ./common/arch/arm64/configs/gki_defconfig
          #Add BBR
-         echo "CONFIG_TCP_CONG_BBR=y" >> ./common/arch/arm64/configs/gki_defconfig
-         echo 'CONFIG_DEFAULT_TCP_CONG="bbr"' >> ./common/arch/arm64/configs/gki_defconfig
+         # echo "CONFIG_TCP_CONG_BBR=y" >> ./common/arch/arm64/configs/gki_defconfig
+         # echo 'CONFIG_DEFAULT_TCP_CONG="bbr"' >> ./common/arch/arm64/configs/gki_defconfig
 
  
          
@@ -161,11 +161,11 @@ jobs:
           name: AK3_KSU_Next_${{ github.event.inputs.MANIFEST }}_${{ env.KVER }}
           path: ./AnyKernel3/*
 
-      - name: 下载 ZIP 工件
-        uses: actions/download-artifact@v4
-        with:
-          name:  AK3_KSU_Next_${{ github.event.inputs.MANIFEST }}_${{ env.KVER }}
-          path:  ./release_zips
+      # - name: 下载 ZIP 工件
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name:  AK3_KSU_Next_${{ github.event.inputs.MANIFEST }}_${{ env.KVER }}
+      #     path:  ./release_zips
 
           
       - name: 创建发布
@@ -185,5 +185,5 @@ jobs:
 
           draft: false
           prerelease: false
-          files: |
-            release_zips/*.zip
+          # files: |
+          #   release_zips/*.zip
