@@ -88,13 +88,13 @@ jobs:
         run: |
           cd kernel_workspace
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b gki-${{ github.event.inputs.ANDROID_VERSION }}-${{ github.event.inputs.KERNEL_VERSION }}
-          git clone https://github.com/TheWildJames/kernel_patches.git
+          git clone https://github.com/WildKernels/kernel_patches.git
           cd kernel_platform
           cp ../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch ./KernelSU-Next/
           cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${{ github.event.inputs.ANDROID_VERSION }}-${{ github.event.inputs.KERNEL_VERSION }}.patch ./common/
           # 0001-kernel-patch-susfs-v1.5.5-to-KernelSU-Next-v1.0.5.patch
           # cp ../kernel_patches/next/0001-kernel-patch-susfs-${{ github.event.inputs.SUSFS_VERSION }}-to-KernelSU-Next-${{ github.event.inputs.KSU_NEXT_VERSION }}.patch ./KernelSU-Next/
-          cp ../kernel_patches/next/kernel-implement-susfs-v1.5.7-gki.patch ./KernelSU-Next/
+          cp ../kernel_patches/next/kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch ./KernelSU-Next/
 
           cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
           cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
@@ -102,7 +102,7 @@ jobs:
           # Apply patches
           cd ./KernelSU-Next
           #patch -p1 < 0001-kernel-patch-susfs-${{ github.event.inputs.SUSFS_VERSION }}-to-KernelSU-Next-${{ github.event.inputs.KSU_NEXT_VERSION }}.patch || true
-          patch -p1 --forward --fuzz=3 < kernel-implement-susfs-v1.5.7-gki.patch || true
+          patch -p1 --forward --fuzz=3 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
           cd ../common
           patch -p1 < 50_add_susfs_in_gki-${{ github.event.inputs.ANDROID_VERSION }}-${{ github.event.inputs.KERNEL_VERSION }}.patch || true
           # Replace next_hooks.patch with syscall_hooks.patch
