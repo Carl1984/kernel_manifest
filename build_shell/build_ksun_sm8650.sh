@@ -42,6 +42,8 @@ BAZEL_ARGS=""
 rm -f "$KERNEL_WORKSPACE/common/android/abi_gki_protected_exports_*" || echo "No protected exports!"
 rm -f "$KERNEL_WORKSPACE/msm-kernel/android/abi_gki_protected_exports_*" || echo "No protected exports!"
 sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/build/kernel/kleaf/workspace_status_stamp.py"
+sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/external/dtc/scripts/setlocalversion"
+sed -i 's/SUBLEVEL = 68/SUBLEVEL = 75/' "$KERNEL_WORKSPACE/msm-kernel/Makefile"
 
 # 检查完整目录结构
 cd "$KERNEL_WORKSPACE" || exit 1
@@ -54,6 +56,7 @@ curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/se
 cd KernelSU-Next
 KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10200)
 sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
+
 
 # 设置 susfs
 cd "$OLD_DIR" || exit 1
@@ -114,7 +117,7 @@ rm common/android/abi_gki_protected_exports_*
 echo "CONFIG_TMPFS_XATTR=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
 echo "CONFIG_TMPFS_POSIX_ACL=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
 
-sed -i 's/check_defconfig//' "$KERNEL_WORKSPACE/common/build.config.gki"
+sed -i '2s/check_defconfig//' "$KERNEL_WORKSPACE/common/build.config.gki"
 
 
 export OPLUS_FEATURES="OPLUS_FEATURE_BSP_DRV_INJECT_TEST=1"
