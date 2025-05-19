@@ -70,7 +70,7 @@ cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
 
 
 # 应用补丁
-cd ../common || exit 1
+cd ./common || exit 1
 patch -p1 < 50_add_susfs_in_gki-${ANDROID_VERSION}-${KERNEL_VERSION}.patch || true
 echo "完成"
 
