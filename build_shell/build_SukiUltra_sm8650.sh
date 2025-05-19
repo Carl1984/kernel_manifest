@@ -67,7 +67,6 @@ cd "$KERNEL_WORKSPACE" || exit 1
 cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${ANDROID_VERSION}-${KERNEL_VERSION}.patch ./common/
 cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
 cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
-cp ../kernel_patches/next/kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch ./KernelSU-Next/
 
 
 # 应用补丁
