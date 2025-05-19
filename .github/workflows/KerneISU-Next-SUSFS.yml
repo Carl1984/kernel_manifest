@@ -32,14 +32,14 @@ on:
         required: true
         type: boolean
         default: true
-      SUSFS_VERSION:
-        description: "SUSFS 版本"
-        required: true
-        default: 'v1.5.5'
-      KSU_NEXT_VERSION:
-        description: "KernelSU-Next 版本"
-        required: true
-        default: 'v1.0.5'
+      # SUSFS_VERSION:
+      #   description: "SUSFS 版本"
+      #   required: true
+      #   default: 'v1.5.5'
+      # KSU_NEXT_VERSION:
+      #   description: "KernelSU-Next 版本"
+      #   required: true
+      #   default: 'v1.0.5'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -117,8 +117,6 @@ jobs:
           patch -p1 -F 3 < 69_hide_stuff.patch
           patch -p1 < ../../.repo/manifests/patches/001-lz4.patch
           patch -p1 < ../../.repo/manifests/patches/002-zstd.patch
-          #Add BBR
-          # patch -p1 -F 3 < ../../.repo/manifests/patches/bbrv3-5.15+.patch
 
       - name: Apply new hook and add configuration
         run: |
@@ -141,11 +139,6 @@ jobs:
          echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> ./common/arch/arm64/configs/gki_defconfig
          echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> ./common/arch/arm64/configs/gki_defconfig
          echo "CONFIG_KSU_SUSFS_SUS_SU=n" >> ./common/arch/arm64/configs/gki_defconfig
-         #Add BBR
-         # echo "CONFIG_TCP_CONG_BBR=y" >> ./common/arch/arm64/configs/gki_defconfig
-         # echo 'CONFIG_DEFAULT_TCP_CONG="bbr"' >> ./common/arch/arm64/configs/gki_defconfig
-
- 
          
          sed -i '2s/check_defconfig//' ./common/build.config.gki
 
