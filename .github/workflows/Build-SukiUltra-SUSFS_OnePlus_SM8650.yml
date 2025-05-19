@@ -31,7 +31,7 @@ on:
           - ksun
           - mksu
           - SukiUltra
-        default: 'mksu'
+        default: 'SukiUltra'
       BUILD_METHOD:
         type: choice
         description: "编译方式"
@@ -53,7 +53,11 @@ on:
           - Realse
           - NO
         default: 'CI'
-
+      KPM:
+        type: boolean
+        description: "是否启用KPM？"
+        required: true
+        default: true
 jobs:
   build:
     runs-on: ubuntu-latest
