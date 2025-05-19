@@ -23,6 +23,13 @@ on:
         description: '启用 O3 优化'
         type: boolean
         default: false
+      ksu_type:
+        description: '要用的ksu'
+        options:
+          - ksun
+          - mksu
+          - SukiUltra
+        default: 'mksu'
 
 jobs:
   build:
@@ -63,11 +70,6 @@ jobs:
       - name: Initialize repo and sync
         working-directory: kernel_workspace
         run: |
-          # repo init \
-          #   -u https://github.com/OnePlusOSS/kernel_manifest.git \
-          #   -b refs/heads/oneplus/sm8650 \
-          #   -m ${{ steps.map_manifest.outputs.mapped_manifest }}.xml \
-          #   --depth=1 --repo-rev=v2.16
           repo init -u https://github.com/Carl1984/kernel_manifest.git -b realme/sm8650 -m ${{ steps.map_manifest.outputs.mapped_manifest }}.xml --depth=1
           repo --trace sync -c -j$(nproc) --no-tags --fail-fast
 
@@ -75,9 +77,9 @@ jobs:
         working-directory: kernel_workspace
         id: build
         run: | 
-         curl -Ls https://raw.githubusercontent.com/Carl1984/kernel_manifest/refs/heads/realme/sm8650/build_shell/build_mksu_sm8650.sh -o build_mksu_sm8650.sh
-         chmod +x build_mksu_sm8650.sh
-         ./build_mksu_sm8650.sh ${{ steps.map_manifest.outputs.mapped_manifest }} \
+         curl -Ls https://raw.githubusercontent.com/Carl1984/kernel_manifest/refs/heads/realme/sm8650/build_shell/build_{{ github.event.inputs.ksu_type }}_sm8650.sh -o build_{{ github.event.inputs.ksu_type }}_sm8650.sh
+         chmod +x build_{{ github.event.inputs.ksu_type }}_sm8650.sh
+         ./build_{{ github.event.inputs.ksu_type }}_sm8650.sh ${{ steps.map_manifest.outputs.mapped_manifest }} \
                                 ${{ github.event.inputs.enable_lto }} \
                                 ${{ github.event.inputs.enable_polly }} \
                                 ${{ github.event.inputs.enable_o3 }} 
