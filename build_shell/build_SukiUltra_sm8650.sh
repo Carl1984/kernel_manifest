@@ -44,7 +44,7 @@ rm -f "$KERNEL_WORKSPACE/msm-kernel/android/abi_gki_protected_exports_*" || echo
 sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/build/kernel/kleaf/workspace_status_stamp.py"
 sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/external/dtc/scripts/setlocalversion"
 sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/msm-kernel/scripts/setlocalversion"
-sed -i 's/SUBLEVEL = 68/SUBLEVEL = 75/' "$KERNEL_WORKSPACE/msm-kernel/Makefile"
+# sed -i 's/SUBLEVEL = 68/SUBLEVEL = 75/' "$KERNEL_WORKSPACE/msm-kernel/Makefile"
 
 # 检查完整目录结构
 cd "$KERNEL_WORKSPACE" || exit 1
@@ -57,7 +57,7 @@ curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU-Ultra/main/kernel/
 cd ./KernelSU
 KSU_VERSION=$(expr $(/usr/bin/git rev-list --count main) "+" 10606)
 sed -i "s/DKSU_VERSION=12800/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
-cd kernel_workspace/kernel_platform
+
 
 # 设置 susfs
 cd "$OLD_DIR" || exit 1
