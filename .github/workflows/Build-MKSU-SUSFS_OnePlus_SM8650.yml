@@ -79,9 +79,9 @@ jobs:
         working-directory: kernel_workspace
         id: build
         run: | 
-         curl -Ls https://raw.githubusercontent.com/Carl1984/kernel_manifest/refs/heads/realme/sm8650/build_shell/build_{{ github.event.inputs.ksu_type }}_sm8650.sh -o build_{{ github.event.inputs.ksu_type }}_sm8650.sh
-         chmod +x build_{{ github.event.inputs.ksu_type }}_sm8650.sh
-         ./build_{{ github.event.inputs.ksu_type }}_sm8650.sh ${{ steps.map_manifest.outputs.mapped_manifest }} \
+         curl -Ls https://raw.githubusercontent.com/Carl1984/kernel_manifest/refs/heads/realme/sm8650/build_shell/build_${{ github.event.inputs.ksu_type }}_sm8650.sh -o build_${{ github.event.inputs.ksu_type }}_sm8650.sh
+         chmod +x build_${{ github.event.inputs.ksu_type }}_sm8650.sh
+         ./build_${{ github.event.inputs.ksu_type }}_sm8650.sh ${{ steps.map_manifest.outputs.mapped_manifest }} \
                                 ${{ github.event.inputs.enable_lto }} \
                                 ${{ github.event.inputs.enable_polly }} \
                                 ${{ github.event.inputs.enable_o3 }} 
