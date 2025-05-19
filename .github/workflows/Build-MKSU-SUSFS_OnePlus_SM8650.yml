@@ -4,15 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       manifest_file:
-        description: '选择设备型号'
         required: true
         type: choice
         options:
-          - OnePlus 12
-          - OnePlus 13R
-          - OnePlus Ace3 Pro
-          - OnePlus Ace5
-          - OnePlus Pad Pro
+          - gt5pro
+          - gt6CommonAce3pro
+          - gt6
+        default: 'gt6'
       enable_lto:
         description: '启用 Full LTO'
         type: boolean
@@ -56,29 +54,28 @@ jobs:
         id: map_manifest
         run: |
           case "${{ github.event.inputs.manifest_file }}" in
-            "OnePlus 12") manifest="oneplus12_v" ;;
-            "OnePlus 13R") manifest="oneplus_13r" ;;
-            "OnePlus Ace3 Pro") manifest="oneplus_ace3_pro_v" ;;
-            "OnePlus Ace5") manifest="oneplus_ace5" ;;
-            "OnePlus Pad Pro") manifest="oneplus_pad2_v" ;;
+            "gt5pro") manifest="gt5pro" ;;
+            "gt6CommonAce3pro") manifest="gt6CommonAce3pro" ;;
+            "gt6") manifest="gt6" ;;
           esac
           echo "mapped_manifest=$manifest" >> $GITHUB_OUTPUT
 
       - name: Initialize repo and sync
         working-directory: kernel_workspace
         run: |
-          repo init \
-            -u https://github.com/OnePlusOSS/kernel_manifest.git \
-            -b refs/heads/oneplus/sm8650 \
-            -m ${{ steps.map_manifest.outputs.mapped_manifest }}.xml \
-            --depth=1 --repo-rev=v2.16
+          # repo init \
+          #   -u https://github.com/OnePlusOSS/kernel_manifest.git \
+          #   -b refs/heads/oneplus/sm8650 \
+          #   -m ${{ steps.map_manifest.outputs.mapped_manifest }}.xml \
+          #   --depth=1 --repo-rev=v2.16
+          repo init -u https://github.com/Carl1984/kernel_manifest.git -b realme/sm8650 -m ${{ steps.map_manifest.outputs.mapped_manifest }}.xml --depth=1
           repo --trace sync -c -j$(nproc) --no-tags --fail-fast
 
       - name: Build Kernel
         working-directory: kernel_workspace
         id: build
         run: | 
-         curl -Ls https://raw.githubusercontent.com/mcxiaochenn/Action_OKI_KernelSU_SUSFS/refs/heads/main/build_shell/build_mksu_sm8650.sh -o build_mksu_sm8650.sh
+         curl -Ls https://raw.githubusercontent.com/Carl1984/kernel_manifest/refs/heads/realme/sm8650/build_shell/build_mksu_sm8650.sh -o build_mksu_sm8650.sh
          chmod +x build_mksu_sm8650.sh
          ./build_mksu_sm8650.sh ${{ steps.map_manifest.outputs.mapped_manifest }} \
                                 ${{ github.event.inputs.enable_lto }} \
