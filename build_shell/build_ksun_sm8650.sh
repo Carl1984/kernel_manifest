@@ -62,9 +62,9 @@ sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
 cd "$OLD_DIR" || exit 1
 git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "gki-${ANDROID_VERSION}-${KERNEL_VERSION}" --depth 1
 # git clone https://github.com/WildKernels/kernel_patches.git
-git clone https://github.com/TanakaLun/kernel_patches4mksu --depth 1
+#git clone https://github.com/TanakaLun/kernel_patches4mksu --depth 1
 cd "$KERNEL_WORKSPACE" || exit 1
-cp ../kernel_patches4mksu/next/kernel-implement-susfs-v1.5.7-gki.patch ./KernelSU-Next/
+#cp ../kernel_patches4mksu/next/kernel-implement-susfs-v1.5.7-gki.patch ./KernelSU-Next/
 cp ../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch ./KernelSU-Next/
 cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${ANDROID_VERSION}-${KERNEL_VERSION}.patch ./common/
 cp ../kernel_patches/next/kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch ./KernelSU-Next/
