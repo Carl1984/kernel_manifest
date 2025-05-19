@@ -9,7 +9,7 @@ ENABLE_O3="$4"
 
 # 根据 manifest_file 映射 CPUD
 case "$MANIFEST_FILE" in
-    "oneplus12_v" | "oneplus_13r" | "oneplus_ace3_pro" | "oneplus_ace3_pro_v" | "oneplus_ace5" | "oneplus_pad2_v")
+    "gt5pro" | "gt6CommonAce3pro" | "gt6")
         CPUD="pineapple"
         ;;
     *)
