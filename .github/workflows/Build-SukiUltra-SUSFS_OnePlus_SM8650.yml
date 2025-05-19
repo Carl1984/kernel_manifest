@@ -1,0 +1,99 @@
+name: Build MKSU-SUSFS OnePlus sm8650
+
+on:
+  workflow_dispatch:
+    inputs:
+      manifest_file:
+        required: true
+        type: choice
+        options:
+          - gt5pro
+          - gt6CommonAce3pro
+          - gt6
+        default: 'gt6'
+      enable_lto:
+        description: '启用 Full LTO'
+        type: boolean
+        default: false
+      enable_polly:
+        description: '启用 Polly'
+        type: boolean
+        default: false
+      enable_o3:
+        description: '启用 O3 优化'
+        type: boolean
+        default: false
+      ksu_type:
+        description: '要用的ksu'
+        required: true
+        type: choice
+        options:
+          - ksun
+          - mksu
+          - SukiUltra
+        default: 'mksu'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+
+      - uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: true
+
+      - uses: actions/setup-python@main
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies and Clang 19
+        run: |
+         sudo apt-get update
+         sudo apt-get install -y repo git curl patch lld
+         sudo bash -c "echo 'deb http://apt.llvm.org/$(lsb_release -cs)/ llvm-toolchain-$(lsb_release -cs)-19 main' > /etc/apt/sources.list.d/llvm.list"
+         sudo bash -c "echo 'deb-src http://apt.llvm.org/$(lsb_release -cs)/ llvm-toolchain-$(lsb_release -cs)-19 main' >> /etc/apt/sources.list.d/llvm.list"
+         wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+         sudo apt-get update
+         sudo apt-get install -y clang-19 lld-19 llvm-19
+         mkdir kernel_workspace
+
+      - name: Map friendly name to manifest file
+        id: map_manifest
+        run: |
+          case "${{ github.event.inputs.manifest_file }}" in
+            "gt5pro") manifest="gt5pro" ;;
+            "gt6CommonAce3pro") manifest="gt6CommonAce3pro" ;;
+            "gt6") manifest="gt6" ;;
+          esac
+          echo "mapped_manifest=$manifest" >> $GITHUB_OUTPUT
+
+      - name: Initialize repo and sync
+        working-directory: kernel_workspace
+        run: |
+          repo init -u https://github.com/Carl1984/kernel_manifest.git -b realme/sm8650 -m ${{ steps.map_manifest.outputs.mapped_manifest }}.xml --depth=1
+          repo --trace sync -c -j$(nproc) --no-tags --fail-fast
+
+      - name: Build Kernel
+        working-directory: kernel_workspace
+        id: build
+        run: | 
+         curl -Ls https://raw.githubusercontent.com/Carl1984/kernel_manifest/refs/heads/realme/sm8650/build_shell/build_${{ github.event.inputs.ksu_type }}_sm8650.sh -o build_${{ github.event.inputs.ksu_type }}_sm8650.sh
+         chmod +x build_${{ github.event.inputs.ksu_type }}_sm8650.sh
+         ./build_${{ github.event.inputs.ksu_type }}_sm8650.sh ${{ steps.map_manifest.outputs.mapped_manifest }} \
+                                ${{ github.event.inputs.enable_lto }} \
+                                ${{ github.event.inputs.enable_polly }} \
+                                ${{ github.event.inputs.enable_o3 }} 
+
+      - name: Make AnyKernel3
+        run: |
+         git clone https://github.com/Kernel-SU/AnyKernel3 --depth=1
+         rm -rf ./AnyKernel3/.git
+         cp kernel_workspace/kernel_platform/out/msm-kernel-pineapple-gki/dist/Image ./AnyKernel3/
+
+      - name: Upload AnyKernel3
+        uses: actions/upload-artifact@v4
+        with:
+         name: AnyKernel3-${{ steps.map_manifest.outputs.mapped_manifest }}-${{ steps.build.outputs.kernel_version }}-MKSU-${{ steps.build.outputs.ksu_version }}-SUSFS-${{ steps.build.outputs.susfs_version }}
+         path: ./AnyKernel3/*
