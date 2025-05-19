@@ -25,6 +25,8 @@ on:
         default: false
       ksu_type:
         description: '要用的ksu'
+        required: true
+        type: choice
         options:
           - ksun
           - mksu
