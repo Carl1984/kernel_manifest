@@ -9,6 +9,11 @@ on:
       MANIFEST:
         description: "配置文件"
         required: true
+        type: choice
+        options:
+          - gt5pro
+          - gt6CommonAce3pro
+          - gt6
         default: 'gt6'
       CPUD:
         description: "处理器代号"
