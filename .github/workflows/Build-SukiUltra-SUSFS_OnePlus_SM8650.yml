@@ -1,4 +1,4 @@
-name: Build MKSU-SUSFS OnePlus sm8650
+name: Build-SukiUltra-SUSFS_OnePlus_SM8650
 
 on:
   workflow_dispatch:
