@@ -55,7 +55,7 @@ cd "$KERNEL_WORKSPACE" || exit 1
 curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s next-susfs
 git submodule update --init --recursive
 cd KernelSU-Next
-KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10200)
+KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10198)
 sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
 
 
@@ -65,8 +65,6 @@ git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "gki-${ANDROID_VERSION}-
 git clone https://github.com/WildKernels/kernel_patches.git
 #git clone https://github.com/TanakaLun/kernel_patches4mksu --depth 1
 cd "$KERNEL_WORKSPACE" || exit 1
-#cp ../kernel_patches4mksu/next/kernel-implement-susfs-v1.5.7-gki.patch ./KernelSU-Next/
-
 cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${ANDROID_VERSION}-${KERNEL_VERSION}.patch ./common/
 cp ../kernel_patches/next/kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch ./KernelSU-Next/
 cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
