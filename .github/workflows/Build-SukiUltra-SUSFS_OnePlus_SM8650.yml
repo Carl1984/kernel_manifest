@@ -112,7 +112,15 @@ jobs:
                                 ${{ github.event.inputs.enable_o3 }} 
 
 
-      - name: Make AnyKernel3
+      - name: Make AnyKernel3 for ksun and mksu
+        if: ${{ github.event.inputs.ksu_type == 'ksun' || github.event.inputs.ksu_type == 'mksu' }}
+        run: |
+         git clone https://github.com/Kernel-SU/AnyKernel3 --depth=1
+         rm -rf ./AnyKernel3/.git
+         cp kernel_workspace/kernel_platform/out/msm-kernel-pineapple-gki/dist/Image ./AnyKernel3/
+         
+
+      - name: Make AnyKernel3 for SukiUltra
         if: ${{ github.event.inputs.ksu_type == 'SukiUltra' }}
         run: |
           git clone https://github.com/Numbersf/AnyKernel3 --depth=1
