@@ -52,8 +52,9 @@ find . -type d > "$OLD_DIR/kernel_directory_structure.txt"
 
 # 设置 KernelSU Next
 cd "$KERNEL_WORKSPACE" || exit 1
-curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s next
-git submodule update --init --recursive
+# curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash 
+curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
+# git submodule update --init --recursive
 cd KernelSU-Next
 KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10200)
 sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
