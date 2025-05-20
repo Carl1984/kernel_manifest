@@ -43,8 +43,7 @@ rm -f "$KERNEL_WORKSPACE/common/android/abi_gki_protected_exports_*" || echo "No
 rm -f "$KERNEL_WORKSPACE/msm-kernel/android/abi_gki_protected_exports_*" || echo "No protected exports!"
 sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/build/kernel/kleaf/workspace_status_stamp.py"
 sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/external/dtc/scripts/setlocalversion"
-sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/common/scripts/setlocalversion
-sed -i 's/ -dirty//g "$KERNEL_WORKSPACE/msm-kernel/scripts/setlocalversion
+sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/msm-kernel/scripts/setlocalversion"
 
 # 检查完整目录结构
 cd "$KERNEL_WORKSPACE" || exit 1
