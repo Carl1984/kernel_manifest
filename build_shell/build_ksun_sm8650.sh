@@ -52,7 +52,7 @@ find . -type d > "$OLD_DIR/kernel_directory_structure.txt"
 
 # 设置 KernelSU Next
 cd "$KERNEL_WORKSPACE" || exit 1
-curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh | bash -s next-susfs
+curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s next-susfs
 git submodule update --init --recursive
 cd KernelSU-Next
 KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10200)
@@ -66,7 +66,7 @@ git clone https://github.com/WildKernels/kernel_patches.git
 #git clone https://github.com/TanakaLun/kernel_patches4mksu --depth 1
 cd "$KERNEL_WORKSPACE" || exit 1
 #cp ../kernel_patches4mksu/next/kernel-implement-susfs-v1.5.7-gki.patch ./KernelSU-Next/
-cp ../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs_for_ksu.patch ./KernelSU-Next/
+
 cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${ANDROID_VERSION}-${KERNEL_VERSION}.patch ./common/
 cp ../kernel_patches/next/kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch ./KernelSU-Next/
 cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
@@ -96,24 +96,24 @@ cd "$KERNEL_WORKSPACE" || exit 1
 rm common/android/abi_gki_protected_exports_*     
 
 #Apply new hook and add configuration
- echo "CONFIG_KSU=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_WITH_KPROBES=n" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_HAS_MAGIC_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_SUS_PATH=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_SUS_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_AUTO_ADD_SUS_KSU_DEFAULT_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_AUTO_ADD_SUS_BIND_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_SUS_KSTAT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_SUS_OVERLAYFS=n" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_TRY_UMOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_SPOOF_UNAME=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_ENABLE_LOG=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
- echo "CONFIG_KSU_SUSFS_SUS_SU=n" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_WITH_KPROBES=n" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_HAS_MAGIC_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_SUS_PATH=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_SUS_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_AUTO_ADD_SUS_KSU_DEFAULT_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_AUTO_ADD_SUS_BIND_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_SUS_KSTAT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_SUS_OVERLAYFS=n" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_TRY_UMOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_SPOOF_UNAME=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_ENABLE_LOG=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_SUSFS_SUS_SU=n" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
 
 
 
