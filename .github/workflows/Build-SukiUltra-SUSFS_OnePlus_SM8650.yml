@@ -1,4 +1,4 @@
-name: Build-SukiUltra-SUSFS_OnePlus_SM8650
+name: Build-KSU-SUSFS_OnePlus_SM8650
 
 on:
   workflow_dispatch:
@@ -75,6 +75,7 @@ jobs:
 
       - name: Install dependencies and Clang 19
         run: |
+         echo "CT=v$(date +%Y%m%d)" >> $GITHUB_ENV
          sudo apt-get update
          sudo apt-get install -y repo git curl patch lld
          sudo bash -c "echo 'deb http://apt.llvm.org/$(lsb_release -cs)/ llvm-toolchain-$(lsb_release -cs)-19 main' > /etc/apt/sources.list.d/llvm.list"
@@ -208,5 +209,27 @@ jobs:
         with:
           name: AnyKernel3_-${{ steps.map_manifest.outputs.mapped_manifest }}-${{ steps.build.outputs.kernel_version }}-${{ github.event.inputs.ksu_type }}-${{ steps.build.outputs.ksu_version }}-SUSFS-${{ steps.build.outputs.susfs_version }}
           path: ./AnyKernel3/*
+
+      - name: 创建发布
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name:  "${{ github.event.inputs.ksu_type }}_${{ github.event.inputs.manifest_file }}_${{ steps.build.outputs.ksu_version }}"
+          name: "Realme_${{ github.event.inputs.manifest_file }} Build ${{ github.run_number }}"
+          body: |
+            编译 ${{ github.event.inputs.ksu_type }} 内核
+            - 机型： Realme-${{ github.event.inputs.manifest_file }}
+            - 特性： MKSU+SUSFS+VFS
+            - KPM：  ${{ github.event.inputs.KPM }}
+            - 编译时间： ${{ env.CT }}
+            - KSU版本： ${{ steps.build.outputs.ksu_version }}
+            - SUSFS： ${{ steps.build.outputs.susfs_version }}
+            - LZ4，ZSTD
+            - KSU 管理器：[KernelSU-Next](https://github.com/KernelSU-Next/KernelSU-Next/releases)
+            - SukiSU 管理器：[SukiSU-Ultra](https://github.com/ShirkNeko/SukiSU-Ultra/releases)
+
+
+          draft: false
+          prerelease: false
 
 
