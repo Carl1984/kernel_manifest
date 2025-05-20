@@ -43,7 +43,8 @@ rm -f "$KERNEL_WORKSPACE/common/android/abi_gki_protected_exports_*" || echo "No
 rm -f "$KERNEL_WORKSPACE/msm-kernel/android/abi_gki_protected_exports_*" || echo "No protected exports!"
 sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/build/kernel/kleaf/workspace_status_stamp.py"
 sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/external/dtc/scripts/setlocalversion"
-sed -i 's/SUBLEVEL = 68/SUBLEVEL = 75/' "$KERNEL_WORKSPACE/msm-kernel/Makefile"
+sed -i 's/ -dirty//g' "$KERNEL_WORKSPACE/common/scripts/setlocalversion
+sed -i 's/ -dirty//g "$KERNEL_WORKSPACE/msm-kernel/scripts/setlocalversion
 
 # 检查完整目录结构
 cd "$KERNEL_WORKSPACE" || exit 1
@@ -52,7 +53,8 @@ find . -type d > "$OLD_DIR/kernel_directory_structure.txt"
 
 # 设置 KernelSU Next
 cd "$KERNEL_WORKSPACE" || exit 1
-curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -s next
+curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh | bash -s next
+git submodule update --init --recursive
 cd KernelSU-Next
 KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10200)
 sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
@@ -61,7 +63,7 @@ sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
 # 设置 susfs
 cd "$OLD_DIR" || exit 1
 git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "gki-${ANDROID_VERSION}-${KERNEL_VERSION}" --depth 1
-# git clone https://github.com/WildKernels/kernel_patches.git
+git clone https://github.com/WildKernels/kernel_patches.git
 #git clone https://github.com/TanakaLun/kernel_patches4mksu --depth 1
 cd "$KERNEL_WORKSPACE" || exit 1
 #cp ../kernel_patches4mksu/next/kernel-implement-susfs-v1.5.7-gki.patch ./KernelSU-Next/
@@ -74,7 +76,8 @@ cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
 
 # 应用补丁
 cd KernelSU-Next || exit 1
-patch -p1 --forward --fuzz=3 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
+# patch -p1 --forward --fuzz=3 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
+patch -p1 --forward < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
 cd ../common || exit 1
 patch -p1 < 50_add_susfs_in_gki-${ANDROID_VERSION}-${KERNEL_VERSION}.patch || true
 # Replace next_hooks.patch with syscall_hooks.patch
@@ -119,7 +122,7 @@ rm common/android/abi_gki_protected_exports_*
 echo "CONFIG_TMPFS_XATTR=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
 echo "CONFIG_TMPFS_POSIX_ACL=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
 
-sed -i '2s/check_defconfig//' "$KERNEL_WORKSPACE/common/build.config.gki"
+sed -i 's/check_defconfig//' "$KERNEL_WORKSPACE/common/build.config.gki"
 
 
 export OPLUS_FEATURES="OPLUS_FEATURE_BSP_DRV_INJECT_TEST=1"
