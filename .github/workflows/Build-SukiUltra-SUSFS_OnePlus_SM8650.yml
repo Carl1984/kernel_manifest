@@ -111,7 +111,9 @@ jobs:
                                 ${{ github.event.inputs.enable_polly }} \
                                 ${{ github.event.inputs.enable_o3 }} 
 
+
       - name: Make AnyKernel3
+        if: ${{ github.event.inputs.ksu_type == 'SukiUltra' }}
         run: |
           git clone https://github.com/Numbersf/AnyKernel3 --depth=1
           rm -rf ./AnyKernel3/.git
@@ -153,25 +155,10 @@ jobs:
             exit 1
           fi
 
-          # 可选复制其它新文件（如果存在）
-          if [ "${{ github.event.inputs.CPU }}" = "sm8750" ]; then
-          for file in dtbo.img system_dlkm.erofs.img vendor_dlkm.img vendor_boot.img; do
-            if [ -f "$dir1$file" ]; then
-              target_name="$file"
-              # 特殊处理 system_dlkm.erofs.img 的目标名
-              if [ "$file" = "system_dlkm.erofs.img" ]; then
-                target_name="system_dlkm.img"
-              fi
-              cp "$dir1$file" "./AnyKernel3/$target_name"
-            else
-              echo "$file 不存在，跳过复制"
-            fi
-          done
-          fi
 
 
       - name: Apply patch_linux and replace Image
-        if: ${{ github.event.inputs.KPM == 'true' }}
+        if: ${{github.event.inputs.ksu_type == 'SukiUltra' && github.event.inputs.KPM == 'true' }}
         run: |
           cd /home/runner/work/kernel_manifest/kernel_manifest/kernel_workspace/kernel_platform/out/msm-kernel-${{ github.event.inputs.CPUD }}-${{ github.event.inputs.BUILD_METHOD }}/dist
           curl -LO https://raw.githubusercontent.com/Numbersf/Action-Build/main/patch_linux
@@ -183,7 +170,7 @@ jobs:
 
       # 下载 SUSFS 模块（CI）
       - name: Download Latest SUSFS Module from CI
-        if: ${{ github.event.inputs.SUSFS_CI == 'CI' }}
+        if: ${{github.event.inputs.ksu_type == 'SukiUltra' && github.event.inputs.SUSFS_CI == 'CI' }}
         run: |
           LATEST_RUN_ID=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/repos/sidex15/susfs4ksu-module/actions/runs?status=success" | \
@@ -202,7 +189,7 @@ jobs:
 
       # 下载 SUSFS 模块（Release）
       - name: Download Latest SUSFS Module from Release
-        if: ${{ github.event.inputs.SUSFS_CI == 'Realse' }}
+        if: ${{github.event.inputs.ksu_type == 'SukiUltra' &&  github.event.inputs.SUSFS_CI == 'Realse' }}
         run: |
           wget https://github.com/sidex15/ksu_module_susfs/releases/latest/download/ksu_module_susfs_1.5.2+.zip
           cp ksu_module_susfs_1.5.2+.zip ./AnyKernel3/
@@ -211,7 +198,7 @@ jobs:
       - name: Upload AnyKernel3
         uses: actions/upload-artifact@v4
         with:
-          name: AnyKernel3_-${{ steps.map_manifest.outputs.mapped_manifest }}-${{ steps.build.outputs.kernel_version }}-SukiSUUltra-${{ steps.build.outputs.ksu_version }}-SUSFS-${{ steps.build.outputs.susfs_version }}
+          name: AnyKernel3_-${{ steps.map_manifest.outputs.mapped_manifest }}-${{ steps.build.outputs.kernel_version }}-${{ github.event.inputs.ksu_type }}-${{ steps.build.outputs.ksu_version }}-SUSFS-${{ steps.build.outputs.susfs_version }}
           path: ./AnyKernel3/*
 
 
