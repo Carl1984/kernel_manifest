@@ -225,8 +225,9 @@ jobs:
             - KSU版本： ${{ steps.build.outputs.ksu_version }}
             - SUSFS： ${{ steps.build.outputs.susfs_version }}
             - LZ4，ZSTD
-            - KSU 管理器：[KernelSU-Next](https://github.com/KernelSU-Next/KernelSU-Next/releases)
+            - KSU Next 管理器：[KernelSU-Next](https://github.com/KernelSU-Next/KernelSU-Next/releases)
             - SukiSU 管理器：[SukiSU-Ultra](https://github.com/ShirkNeko/SukiSU-Ultra/releases)
+            - MKSU 管理器：：[MKSU Action](https://github.com/5ec1cff/KernelSU/actions/workflows/build-manager.yml)
 
 
           draft: false
