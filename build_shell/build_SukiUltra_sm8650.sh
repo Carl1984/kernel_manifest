@@ -126,7 +126,7 @@ sed -i 's/check_defconfig//' "$KERNEL_WORKSPACE/common/build.config.gki"
 export OPLUS_FEATURES="OPLUS_FEATURE_BSP_DRV_INJECT_TEST=1"
 
 #指定内核版本
-sed -i '$s|echo "\$res"|echo "6.1.75-android14-11-o-g4c9c8979e2a7"|' "$KERNEL_WORKSPACE/common/scripts/setlocalversion"
+sed -i '$s|echo "\$res"|echo "-android14-11-o-g4c9c8979e2a7"|' "$KERNEL_WORKSPACE/common/scripts/setlocalversion"
  
 # 构建内核
 cd "$OLD_DIR" || exit 1
