@@ -9,7 +9,7 @@ ENABLE_O3="$4"
 
 # 根据 manifest_file 映射 CPUD
 case "$MANIFEST_FILE" in
-    "gt5pro" | "gt6CommonAce3pro" | "gt6")
+    "gt5pro" | "gt6CommonAce3pro" | "gt6CommonAce5" | "gt6")
         CPUD="pineapple"
         ;;
     *)
