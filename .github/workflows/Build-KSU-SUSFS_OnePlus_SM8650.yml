@@ -9,6 +9,7 @@ on:
         options:
           - gt5pro
           - gt6CommonAce3pro
+          - gt6CommonAce5
           - gt6
         default: 'gt6'
       enable_lto:
@@ -91,6 +92,7 @@ jobs:
           case "${{ github.event.inputs.manifest_file }}" in
             "gt5pro") manifest="gt5pro" ;;
             "gt6CommonAce3pro") manifest="gt6CommonAce3pro" ;;
+            "gt6CommonAce5") manifest="gt6CommonAce5" ;;
             "gt6") manifest="gt6" ;;
           esac
           echo "mapped_manifest=$manifest" >> $GITHUB_OUTPUT
