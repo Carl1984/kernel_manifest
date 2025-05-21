@@ -53,7 +53,8 @@ find . -type d > "$OLD_DIR/kernel_directory_structure.txt"
 
 # 添加 SukiSU Ultra
 cd "$KERNEL_WORKSPACE" || exit 1
-curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-dev
+# curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-dev
+curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-dev
 cd ./KernelSU
 KSU_VERSION=$(expr $(/usr/bin/git rev-list --count main) "+" 10606)
 sed -i "s/DKSU_VERSION=12800/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
@@ -123,6 +124,10 @@ sed -i 's/check_defconfig//' "$KERNEL_WORKSPACE/common/build.config.gki"
 
 
 export OPLUS_FEATURES="OPLUS_FEATURE_BSP_DRV_INJECT_TEST=1"
+
+#指定内核版本
+sed -i '$s|echo "\$res"|echo "6.1.75-android14-11-o-g4c9c8979e2a7"|' "$KERNEL_WORKSPACE/common/scripts/setlocalversion"
+ 
 # 构建内核
 cd "$OLD_DIR" || exit 1
 ./kernel_platform/build_with_bazel.py -t "${CPUD}" gki \
