@@ -6,17 +6,18 @@ MANIFEST_FILE="$1"
 ENABLE_LTO="$2"
 ENABLE_POLLY="$3"
 ENABLE_O3="$4"
-
-# 根据 manifest_file 映射 CPUD
-case "$MANIFEST_FILE" in
-    "gt5pro" | "gt6CommonAce3pro" | "gt6CommonAce5" | "gt6")
-        CPUD="pineapple"
-        ;;
-    *)
-        echo "Error: Unsupported manifest_file: $MANIFEST_FILE"
-        exit 1
-        ;;
-esac
+CPUD="pineapple"
+KERNEL_Name="$5"
+# # 根据 manifest_file 映射 CPUD
+# case "$MANIFEST_FILE" in
+#     "gt5pro" | "gt6CommonAce3pro" | "gt6CommonAce5" | "gt6")
+#         CPUD="pineapple"
+#         ;;
+#     *)
+#         echo "Error: Unsupported manifest_file: $MANIFEST_FILE"
+#         exit 1
+#         ;;
+# esac
 
 # 设置版本变量
 ANDROID_VERSION="android14"
@@ -126,8 +127,8 @@ sed -i 's/check_defconfig//' "$KERNEL_WORKSPACE/common/build.config.gki"
 export OPLUS_FEATURES="OPLUS_FEATURE_BSP_DRV_INJECT_TEST=1"
 
 #指定内核版本
-sed -i '$s|echo "\$res"|echo "-android14-11-o-g4c9c8979e2a7"|' "$KERNEL_WORKSPACE/common/scripts/setlocalversion"
- 
+# sed -i '$s|echo "\$res"|echo "-android14-11-o-g4c9c8979e2a7"|' "$KERNEL_WORKSPACE/common/scripts/setlocalversion"
+sed -i '$s|echo "\$res"|echo '$KERNEL_Name'|' "$KERNEL_WORKSPACE/common/scripts/setlocalversion" 
 # 构建内核
 cd "$OLD_DIR" || exit 1
 ./kernel_platform/build_with_bazel.py -t "${CPUD}" gki \
