@@ -59,6 +59,10 @@ on:
         description: "是否启用KPM？"
         required: true
         default: true
+      KERNEL_NAME:
+        description: "修改内核名称"
+        required: true
+        default: '-android14-11-o-g4c9c8979e2a7'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -112,7 +116,8 @@ jobs:
          ./build_${{ github.event.inputs.ksu_type }}_sm8650.sh ${{ steps.map_manifest.outputs.mapped_manifest }} \
                                 ${{ github.event.inputs.enable_lto }} \
                                 ${{ github.event.inputs.enable_polly }} \
-                                ${{ github.event.inputs.enable_o3 }} 
+                                ${{ github.event.inputs.enable_o3 }}  \
+                                ${{ github.event.inputs.KERNEL_NAME }} \
 
 
       - name: Make AnyKernel3 for ksun and mksu
