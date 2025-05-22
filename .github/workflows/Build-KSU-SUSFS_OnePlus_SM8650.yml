@@ -231,7 +231,7 @@ jobs:
             - 编译时间： ${{ env.CT }}
             - KSU版本： ${{ steps.build.outputs.ksu_version }}
             - SUSFS： ${{ steps.build.outputs.susfs_version }}
-            - 内核版本: ${{ steps.build.outputs.kernel_version }}}${{ github.event.inputs.KERNEL_NAME }}        
+            - 内核版本: ${{ steps.build.outputs.kernel_version }}${{ github.event.inputs.KERNEL_NAME }}        
             - LZ4，ZSTD
             - KSU Next 管理器：[KernelSU-Next](https://github.com/KernelSU-Next/KernelSU-Next/releases)
             - SukiSU 管理器：[SukiSU-Ultra](https://github.com/ShirkNeko/SukiSU-Ultra/releases)
