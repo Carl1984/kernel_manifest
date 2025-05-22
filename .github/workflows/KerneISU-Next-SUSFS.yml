@@ -32,6 +32,10 @@ on:
         required: true
         type: boolean
         default: true
+      KERNEL_NAME:
+        description: "修改内核名称"
+        required: true
+        default: '-android14-11-o-g4c9c8979e2a7'
       # SUSFS_VERSION:
       #   description: "SUSFS 版本"
       #   required: true
