@@ -23,8 +23,8 @@ KERNEL_Name="$5"
 ANDROID_VERSION="android14"
 KERNEL_VERSION="6.1"
 SUSFS_VERSION="1.5.7"
-# ksun_branch="next-susfs"
-ksun_branch="next"
+ksun_branch="next-susfs"
+# ksun_branch="next"
 # 设置工作目录
 OLD_DIR="$(pwd)"
 KERNEL_WORKSPACE="$OLD_DIR/kernel_platform"
@@ -116,6 +116,7 @@ rm common/android/abi_gki_protected_exports_*
 #Apply new hook and add configuration
 echo "CONFIG_KSU=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
 echo "CONFIG_KSU_WITH_KPROBES=n" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
+echo "CONFIG_KSU_KPROBES_HOOK=n" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
 echo "CONFIG_KSU_MANUAL_HOOK=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
 echo "CONFIG_KSU_SUSFS=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
 echo "CONFIG_KSU_SUSFS_HAS_MAGIC_MOUNT=y" >> "$KERNEL_WORKSPACE/common/arch/arm64/configs/gki_defconfig"
