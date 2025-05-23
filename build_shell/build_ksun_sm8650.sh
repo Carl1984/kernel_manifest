@@ -23,6 +23,7 @@ KERNEL_Name="$5"
 ANDROID_VERSION="android14"
 KERNEL_VERSION="6.1"
 SUSFS_VERSION="1.5.7"
+ksun_branch="next-susfs"
 
 # 设置工作目录
 OLD_DIR="$(pwd)"
@@ -55,7 +56,15 @@ find . -type d > "$OLD_DIR/kernel_directory_structure.txt"
 cd "$KERNEL_WORKSPACE" || exit 1
 # curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash 
 # curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
-curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
+# curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
+
+if [ "${ksun_branch}" == "stable" ]; then
+curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -
+else
+curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s next-susfs
+fi
+
+
 # git submodule update --init --recursive
 cd KernelSU-Next
 # KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10200)
@@ -78,9 +87,14 @@ cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
 
 # 应用补丁
 cd KernelSU-Next || exit 1
-# patch -p1 --forward --fuzz=3 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
-# patch -p1 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
-# patch -p1 < 0001_susfs_157_for_ksunext.patc || true
+if [ "${ksun_branch}" == "next-susfs" ]; then
+    # patch -p1 --forward --fuzz=3 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
+    # patch -p1 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
+    # patch -p1 < 0001_susfs_157_for_ksunext.patch || true
+    cp ../../.repo/manifests/patches/0001-kernel-patch-susfs-v1.5.7-to-KernelSU-Next-v1.0.7.patch ./
+    patch -p1 --forward --fuzz=3 < 0001-kernel-patch-susfs-v1.5.7-to-KernelSU-Next-v1.0.7.patch || true
+fi
+
 cd ../common || exit 1
 patch -p1 < 50_add_susfs_in_gki-${ANDROID_VERSION}-${KERNEL_VERSION}.patch || true
 # Replace next_hooks.patch with syscall_hooks.patch
