@@ -58,10 +58,10 @@ cd "$KERNEL_WORKSPACE" || exit 1
 # curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
 # curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
 
-if [ "${ksun_branch}" == "stable" ]; then
-curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -
+if [ "$ksun_branch" == "stable" ]; then
+    curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -
 else
-curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s next-susfs
+    curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s next-susfs
 fi
 
 
@@ -87,7 +87,7 @@ cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
 
 # 应用补丁
 cd KernelSU-Next || exit 1
-if [ "${ksun_branch}" == "next-susfs" ]; then
+if [ "$ksun_branch" == "stable" ]; then
     # patch -p1 --forward --fuzz=3 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
     # patch -p1 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
     # patch -p1 < 0001_susfs_157_for_ksunext.patch || true
