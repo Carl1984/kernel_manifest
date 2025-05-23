@@ -80,7 +80,8 @@ jobs:
 
       - name: Install dependencies and Clang 19
         run: |
-         echo "CT=v$(date +%Y%m%d)" >> $GITHUB_ENV
+         # echo "CT=v$(date +%Y%m%d)" >> $GITHUB_ENV
+         echo "BUILD_TIME=$(TZ=Asia/Shanghai date "+%Y%m%d%H%M")" >> $GITHUB_ENV
          sudo apt-get update
          sudo apt-get install -y repo git curl patch lld
          sudo bash -c "echo 'deb http://apt.llvm.org/$(lsb_release -cs)/ llvm-toolchain-$(lsb_release -cs)-19 main' > /etc/apt/sources.list.d/llvm.list"
@@ -90,6 +91,20 @@ jobs:
          sudo apt-get install -y clang-19 lld-19 llvm-19
          mkdir kernel_workspace
 
+      - name: Show selected inputs debug
+        run: |
+
+          echo "Selected manifest_file: ${{ github.event.inputs.manifest_file }}"
+          echo "Selected enable_lto: ${{ github.event.inputs.enable_lto }}"
+          echo "Selected enable_polly: ${{ github.event.inputs.enable_polly }}"
+          echo "Selected enable_o3: ${{ github.event.inputs.enable_o3 }}"
+          echo "Selected ksu_type: ${{ github.event.inputs.ksu_type }}"
+          echo "Selected BUILD_METHOD: ${{ github.event.inputs.BUILD_METHOD }}"
+          echo "Selected CPUD: ${{ github.event.inputs.CPUD }}"
+          echo "Selected SUSFS_CI: ${{ github.event.inputs.SUSFS_CI }}"
+          echo "Selected KPM: ${{ github.event.inputs.KPM }}"
+          echo "Selected KERNEL_NAME: ${{ github.event.inputs.KERNEL_NAME }}"
+          
       - name: Map friendly name to manifest file
         id: map_manifest
         run: |
@@ -221,14 +236,14 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name:  "${{ github.event.inputs.ksu_type }}_${{ github.event.inputs.manifest_file }}_${{ steps.build.outputs.ksu_version }}"
-          name: "Realme_${{ github.event.inputs.manifest_file }} Build ${{ github.run_number }}"
+          tag_name:  "${{ github.event.inputs.ksu_type }}_${{ github.event.inputs.manifest_file }}_${{ steps.build.outputs.ksu_version }}_${{ env.BUILD_TIME }}"
+          name: "Realme_${{ github.event.inputs.manifest_file }} Build ${{ github.run_number }}_${{ env.BUILD_TIME }}"
           body: |
             编译 ${{ github.event.inputs.ksu_type }} 内核
             - 机型： Realme-${{ github.event.inputs.manifest_file }}
             - 特性： MKSU+SUSFS+VFS
             - KPM：  ${{ github.event.inputs.KPM }}
-            - 编译时间： ${{ env.CT }}
+            - 编译时间： ${{ env.BUILD_TIME }}
             - KSU版本： ${{ steps.build.outputs.ksu_version }}
             - SUSFS： ${{ steps.build.outputs.susfs_version }}
             - 内核版本: ${{ steps.build.outputs.kernel_version }}${{ github.event.inputs.KERNEL_NAME }}        
