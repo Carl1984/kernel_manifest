@@ -60,15 +60,18 @@ cd "$KERNEL_WORKSPACE" || exit 1
 
 if [ "$ksun_branch" == "next" ]; then
     curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s next
+    BASE_VERSION=10200
 else
     curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -s next-susfs
+    BASE_VERSION=10198
 fi
 
 
 # git submodule update --init --recursive
 cd KernelSU-Next
 # KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10200)
-KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10198)
+# KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10198)
+KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" $BASE_VERSION)
 sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
 
 
