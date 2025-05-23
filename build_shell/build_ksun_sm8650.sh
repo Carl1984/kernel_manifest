@@ -54,10 +54,12 @@ find . -type d > "$OLD_DIR/kernel_directory_structure.txt"
 # 设置 KernelSU Next
 cd "$KERNEL_WORKSPACE" || exit 1
 # curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash 
-curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
+# curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
+curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
 # git submodule update --init --recursive
 cd KernelSU-Next
-KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10200)
+# KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10200)
+KSU_VERSION=$(expr $(/usr/bin/git rev-list --count HEAD) "+" 10198)
 sed -i "s/DKSU_VERSION=11998/DKSU_VERSION=${KSU_VERSION}/" kernel/Makefile
 
 
@@ -68,7 +70,8 @@ git clone https://github.com/WildKernels/kernel_patches.git
 #git clone https://github.com/TanakaLun/kernel_patches4mksu --depth 1
 cd "$KERNEL_WORKSPACE" || exit 1
 cp ../susfs4ksu/kernel_patches/50_add_susfs_in_gki-${ANDROID_VERSION}-${KERNEL_VERSION}.patch ./common/
-cp ../kernel_patches/next/kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch ./KernelSU-Next/
+# cp ../kernel_patches/next/kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch ./KernelSU-Next/
+# cp ../kernel_patches/next/0001_susfs_157_for_ksunext.patch ./KernelSU-Next/
 cp ../susfs4ksu/kernel_patches/fs/* ./common/fs/
 cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
 
@@ -76,7 +79,8 @@ cp ../susfs4ksu/kernel_patches/include/linux/* ./common/include/linux/
 # 应用补丁
 cd KernelSU-Next || exit 1
 # patch -p1 --forward --fuzz=3 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
-patch -p1 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
+# patch -p1 < kernel-patch-susfs-v1.5.7-to-KernelSU-Next.patch || true
+# patch -p1 < 0001_susfs_157_for_ksunext.patc || true
 cd ../common || exit 1
 patch -p1 < 50_add_susfs_in_gki-${ANDROID_VERSION}-${KERNEL_VERSION}.patch || true
 # Replace next_hooks.patch with syscall_hooks.patch
