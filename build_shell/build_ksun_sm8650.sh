@@ -23,8 +23,8 @@ KERNEL_Name="$5"
 ANDROID_VERSION="android14"
 KERNEL_VERSION="6.1"
 SUSFS_VERSION="1.5.7"
-ksun_branch="next-susfs"
-
+# ksun_branch="next-susfs"
+ksun_branch="next"
 # 设置工作目录
 OLD_DIR="$(pwd)"
 KERNEL_WORKSPACE="$OLD_DIR/kernel_platform"
